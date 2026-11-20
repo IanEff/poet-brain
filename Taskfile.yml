@@ -1,0 +1,69 @@
+version: "3"
+
+# Linters run from uv's tool cache at these versions, never from .venv. Bump them here.
+vars:
+  RUFF: uvx ruff@0.17.3
+  TY: uvx ty@0.0.94
+
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  setup:
+    desc: Install .venv from uv.lock (direnv does this on cd, too)
+    cmds:
+      - uv sync
+
+  run:
+    desc: Run the console script; args after -- pass through
+    cmds:
+      - uv run poet-brain {{.CLI_ARGS}}
+
+  fmt:
+    desc: Fix lint and format with ruff
+    cmds:
+      - "{{.RUFF}} check --fix ."
+      - "{{.RUFF}} format ."
+
+  lock-check:
+    desc: Fail if uv.lock is out of date with pyproject.toml
+    cmds:
+      - uv lock --check
+
+  fmt-check:
+    desc: Fail on unformatted code
+    cmds:
+      - "{{.RUFF}} format --check ."
+
+  lint:
+    desc: Ruff lint, no fixes
+    cmds:
+      - "{{.RUFF}} check ."
+
+  typecheck:
+    desc: Type check with ty against .venv, synced first
+    cmds:
+      - uv sync --locked
+      - "{{.TY}} check"
+
+  test:
+    desc: Run pytest; args after -- pass through (task test -- -k greet)
+    cmds:
+      - uv run pytest --cov --cov-report=term-missing {{.CLI_ARGS}}
+
+  build:
+    desc: Build the sdist and wheel into dist/
+    cmds:
+      - uv build
+
+  ci:
+    desc: Every check, in order; CI runs this
+    cmds:
+      - task: lock-check
+      - task: fmt-check
+      - task: lint
+      - task: typecheck
+      - task: test
+      - task: build

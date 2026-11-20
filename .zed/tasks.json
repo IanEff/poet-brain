@@ -1,0 +1,57 @@
+[
+  {
+    "label": "Run Tests",
+    "command": "task test",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "tags": ["python-test"]
+  },
+  {
+    "label": "Run Current Test File",
+    "command": "uv",
+    "args": ["run", "pytest", "$ZED_FILE"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Run Failed Tests",
+    "command": "uv",
+    "args": ["run", "pytest", "--lf"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "CI (task ci)",
+    "command": "task ci",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Type Check",
+    "command": "task typecheck",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Ruff Fix + Format",
+    "command": "task fmt",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Run Current File",
+    "command": "uv",
+    "args": ["run", "$ZED_FILE"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "IPython REPL",
+    "command": "uv",
+    "args": ["run", "--with", "ipython", "ipython"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "reveal": "always"
+  }
+]

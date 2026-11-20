@@ -1,0 +1,88 @@
+
+[project]
+name = "poet-brain"
+version = "0.1.0"
+description = "A model trainer."
+readme = "README.md"
+authors = [{ name = "Ian Furst", email = "ian.furst@gmail.com" }]
+requires-python = ">=3.15"
+dependencies = [
+    "accelerate>=1.16.0",
+    "datasets>=5.2.0",
+    "evaluate>=0.4.6",
+    "requests>=2.34.2",
+    "torch>=2.15.0",
+    "transformers>=5.23.0",
+]
+
+[project.scripts]
+poet-brain = "poet_brain.main:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+# ruff and ty aren't here: the Taskfile runs them with uvx at pinned versions.
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.6.6",
+    "modal>=1.6.4",
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-v"]
+
+[tool.coverage.run]
+source = ["poet_brain"]
+
+[tool.coverage.report]
+exclude_lines = [
+        "pragma: no cover",
+        "def __repr__",
+        "raise AssertionError",
+        "raise NotImplementedError",
+        "if __name__ == .__main__.:",
+        "if TYPE_CHECKING:",
+        "@abstractmethod",
+]
+
+
+[tool.uv]
+required-version = "==0.13.5"  # setup-uv reads this, so CI runs the same uv
+
+# Ruff mirrors ~/.config/ruff/ruff.toml so new projects lint the way the global config does.
+# target-version comes from requires-python.
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "W",    # pycodestyle warnings
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "C4",   # flake8-comprehensions
+    "RUF",  # ruff-specific rules
+    "SIM",  # flake8-simplify
+    "S",    # flake8-bandit
+]
+fixable = ["ALL"]
+ignore = [
+    "S101",   # assert is fine
+    "S603",   # subprocess without shell=True
+    "S607",   # subprocess with partial executable path
+    "SIM210",
+    "E1", "E2", "E3", "W1", "W2", "W3",
+    "RUF005", "F841", "F401",  # shitlist, Oct 2025
+    "W293", "S311",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
