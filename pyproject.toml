@@ -5,7 +5,7 @@ version = "0.1.0"
 description = "A model trainer."
 readme = "README.md"
 authors = [{ name = "Ian Furst", email = "ian.furst@gmail.com" }]
-requires-python = ">=3.15"
+requires-python = ">=3.13"
 dependencies = [
     "accelerate>=1.16.0",
     "datasets>=5.2.0",

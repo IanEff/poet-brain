@@ -70,7 +70,7 @@ configs (F4).
 
 ## Python version
 
-Pinned in `.python-version` (3.15).
+Pinned in `.python-version` (3.13).
 
 ---
 
